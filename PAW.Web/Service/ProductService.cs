@@ -52,46 +52,75 @@ public class ProductService(IRestProvider restProvider) : ServiceBase, IProductS
         return await JsonProvider.DeserializeAsync<PagedResult<ProductDTO>>(response);
     }
 
+    //public async Task<ProductDTO?> GetByIdAsync(string id)
+    //{
+    //    var response = await restProvider.GetAsync(SetPathUrl(_path), id);
+    //    return await JsonProvider.DeserializeAsync<ProductDTO>(response);
+    //}
+
     public async Task<ProductDTO?> GetByIdAsync(string id)
     {
-        var response = await restProvider.GetAsync(SetPathUrl(_path), id);
-        return await JsonProvider.DeserializeAsync<ProductDTO>(response);
+        try
+        {
+            var endpoint = SetPathUrl(_path);
+            if (!endpoint.EndsWith("/"))
+                endpoint += "/";
+
+            var response = await restProvider.GetAsync(endpoint, id);
+            return await JsonProvider.DeserializeAsync<ProductDTO>(response);
+        }
+        catch (Exception ex)
+        {
+            return null; // Retorna null si no se encuentra o hay error
+        }
     }
+
+
 
     //public async Task<bool> SaveAsync(ProductDTO productDto)
     //{
-    //    // La API espera una colección IEnumerable<ProductDTO> en el body
     //    var list = new List<ProductDTO> { productDto };
     //    var jsonContent = JsonProvider.Serialize(list);
 
-    //    var response = await restProvider.PostAsync(SetPathUrl(_path), jsonContent);
-    //    return response.IsSuccessStatusCode;
+    //    var response = await restProvider.PostAsync(
+    //        SetPathUrl(_path),
+    //        jsonContent);
+
+    //    return !string.IsNullOrEmpty(response);
     //}
 
     public async Task<bool> SaveAsync(ProductDTO productDto)
     {
+        var endpoint = SetPathUrl(_path);
+
+        // El POST se envía a la colección general /product
         var list = new List<ProductDTO> { productDto };
         var jsonContent = JsonProvider.Serialize(list);
 
-        var response = await restProvider.PostAsync(
-            SetPathUrl(_path),
-            jsonContent);
-
+        var response = await restProvider.PostAsync(endpoint, jsonContent);
         return !string.IsNullOrEmpty(response);
     }
 
-    //public async Task<bool> DeleteAsync(string id)
-    //{
-    //    var response = await restProvider.DeleteAsync(SetPathUrl(_path), id.ToString());
-    //    return response.IsSuccessStatusCode;
-    //}
+
     public async Task<bool> DeleteAsync(string id)
     {
-        var response = await restProvider.DeleteAsync(
-            SetPathUrl(_path),
-            id);
+        try
+        {
+            
+            var endpoint = SetPathUrl(_path);
 
-        return !string.IsNullOrEmpty(response);
+            if (!endpoint.EndsWith("/"))
+                endpoint += "/";
+
+            var response = await restProvider.DeleteAsync(endpoint, id);
+
+            return !string.IsNullOrEmpty(response);
+        }
+        catch (Exception ex)
+        {
+            // Si la API falla, captura el error  500
+            return false;
+        }
     }
 }
 

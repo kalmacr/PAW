@@ -84,7 +84,7 @@ namespace PAW.Models.DTO;
                 Rating = productDTO.Rating,
                 ModifiedBy = productDTO.ModifiedBy,
                 CreatedBy = productDTO.CreatedBy,
-                LastModified = productDTO.ModifiedData,
+                LastModified = DateTime.Now,
 
                 // Asignación de referencias a la entidad
                 CategoryId = productDTO.CategoryId,
