@@ -1,0 +1,46 @@
+﻿@model PAW.Models.DTO.InventoryDTO
+
+<div class="modal-header bg-primary text-white">
+    <h5 class="modal-title">@(Model.InventoryId > 0 ? "Editar Inventario" : "Nueva Inventario")</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+<form id="inventoryForm">
+    <div class="modal-body">
+        
+        <input type="hidden" id="InventoryId" value="@Model.InventoryId" />
+        
+        <div class="mb-3">
+            <label class="form-label">UnitPrice
+                <input type="text" id="UnitPrice" class="form-control" value="@Model.UnitPrice" required />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">UnitsInStock</label>
+            <textarea id="UnitsInStock" class="form-control" rows="2">@Model.UnitsInStock</textarea>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Última Actualización</label>
+            <!-- El id DEBE ser LastUpdated para que coincida con el script -->
+            <input type="datetime-local" id="LastUpdated" class="form-control"
+                   value="@(Model.LastUpdated.HasValue? Model.LastUpdated.Value.ToString("yyyy-MM-ddTHH:mm") : DateTime.Now.ToString("yyyy-MM-ddTHH:mm"))" />
+        </div>
+        
+        <div class="mb-3">
+            <label class="form-label">ProductId</label>
+            <textarea id="ProductId" class="form-control" rows="2">@Model.ProductId</textarea>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">DateAdded</label>
+            <textarea id="DateAdded" class="form-control" rows="2">@Model.DateAdded</textarea>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">ModifiedBy</label>
+            <textarea id="ModifiedBy" class="form-control" rows="2">@Model.ModifiedBy</textarea>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-success" onclick="saveInventory()">Guardar</button>
+    </div>
+</form>

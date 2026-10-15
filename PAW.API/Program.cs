@@ -1,5 +1,6 @@
 using PAW.DataAccess.MSSQL;
 using PAW.DataAccess.Repositories;
+using PAW.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +12,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<IInventoryRepository, InventoryRepository>();
 builder.Services.AddDbContext<ProductDb1Context>();
 
 var app = builder.Build();

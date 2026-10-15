@@ -1,0 +1,64 @@
+﻿@model PAW.Models.DTO.InventoryDTO
+@{
+    ViewData["Title"] = "Create Inventory";
+}
+<div class="container mt-4">
+    <div class="card shadow">
+
+        <div class="card-header bg-primary text-white">
+            <h4>Create Inventory</h4>
+        </div>
+
+        <div class="card-body">
+
+            <form asp-action="Create">
+
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="mb-3">
+                    <label asp-for="InventoryId" class="form-label"></label>
+                    <input asp-for="InventoryId" class="form-control" />
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="UnitPrice" class="form-label"></label>
+                    <input asp-for="UnitPrice" class="form-control" />
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="UnitsInStock" class="form-label"></label>
+                    <textarea asp-for="UnitsInStock" class="form-control"></textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="LastUpdated" class="form-label"></label>
+                    
+
+                </div>
+                <div class="mb-3">
+                    <label asp-for="ProductId" class="form-label"></label>
+                    <input asp-for="ProductId" class="form-control" />
+                </div>
+                <div class="mb-3">
+                    <label asp-for="DateAdded" class="form-label"></label>
+                   
+                </div>
+                <div class="mb-3">
+                    <label asp-for="ModifiedBy" class="form-label"></label>
+                    <textarea asp-for="ModifiedBy" class="form-control"></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-success">
+                    Save
+                </button>
+
+                <a asp-action="Index" class="btn btn-secondary">
+                    Back
+                </a>
+
+            </form>
+
+        </div>
+
+    </div>
+</div>

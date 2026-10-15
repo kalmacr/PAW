@@ -1,0 +1,38 @@
+﻿@model PAW.Models.DTO.InventoryDTO
+
+<div class="modal-header bg-dark text-white">
+    <h5 class="modal-title"><i class="bi bi-info-circle"></i> Detalles del Inventario
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+<div class="modal-body">
+    <dl class="row">
+       
+
+        <dt class="col-sm-4">Category ID</dt>
+        <dd class="col-sm-8"><strong>@Model.InventoryId</strong></dd>
+
+        <dt class="col-sm-4">UnitPrice</dt>
+        <dd class="col-sm-8">@Model.UnitPrice</dd>
+
+        <dt class="col-sm-4">UnitsInStock</dt>
+        <dd class="col-sm-8">@Model.UnitsInStock</dd>
+
+        <dt class="col-sm-4">ProductId</dt>
+        <dd class="col-sm-8">@Model.ProductId</dd>
+      
+
+        <dt class="col-sm-4">LastUpdated</dt>
+
+        <dd class="col-sm-8">@Model.LastUpdated</dd>
+
+        <dt class="col-sm-4">DateAdded</dt>
+
+        <dd class="col-sm-8">@Model.DateAdded</dd>
+
+        <dt class="col-sm-4">Modificado Por </dt>
+        <dd class="col-sm-8">@Model.ModifiedBy</dd>
+    </dl>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+</div>

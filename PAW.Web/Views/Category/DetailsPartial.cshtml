@@ -1,0 +1,32 @@
+﻿@model PAW.Models.DTO.CategoryDTO
+
+<div class="modal-header bg-dark text-white">
+    <h5 class="modal-title"><i class="bi bi-info-circle"></i> Detalles del Categoria
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+<div class="modal-body">
+    <dl class="row">
+       
+
+        <dt class="col-sm-4">Category ID</dt>
+        <dd class="col-sm-8"><strong>@Model.CategoryId</strong></dd>
+
+        <dt class="col-sm-4">Nombre</dt>
+        <dd class="col-sm-8">@Model.CategoryName</dd>
+
+        <dt class="col-sm-4">Descripción</dt>
+        <dd class="col-sm-8">@Model.Description</dd>
+
+      
+
+        <dt class="col-sm-4">Modificado Por / Fecha</dt>
+        <dd class="col-sm-8">@Model.ModifiedBy</dd>
+
+        <dt class="col-sm-4">Modificado Por ultima vez</dt>
+
+        <dd class="col-sm-8">@Model.LastModified</dd>
+    </dl>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+</div>

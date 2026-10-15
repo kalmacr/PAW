@@ -1,0 +1,26 @@
+﻿@model PAW.Models.DTO.CategoryDTO
+
+<div class="modal-header bg-primary text-white">
+    <h5 class="modal-title">@(Model.CategoryId > 0 ? "Editar Categoria" : "Nueva Categoria")</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+<form id="categoryForm">
+    <div class="modal-body">
+        
+        <input type="hidden" id="CategoryId" value="@Model.CategoryId" />
+        
+        <div class="mb-3">
+            <label class="form-label">Nombre de la Categoria
+            <input type="text" id="CategoryName" class="form-control" value="@Model.CategoryName" required />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Descripción</label>
+            <textarea id="Description" class="form-control" rows="2">@Model.Description</textarea>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-success" onclick="saveCategory()">Guardar</button>
+    </div>
+</form>

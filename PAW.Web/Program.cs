@@ -1,4 +1,5 @@
 using APW.Architecture;
+using PAW.Models;
 using PAW.Web.Service;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -6,7 +7,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IRestProvider, RestProvider>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IInventoryService, InventoryService>();
 
 
 var app = builder.Build();

@@ -1,0 +1,196 @@
+﻿@model PAW.Models.DTO.PagedResult<PAW.Models.DTO.InventoryDTO>
+@{
+    ViewData["Title"] = "Inventory";
+}
+
+<div class="d-flex justify-content-between align-items-center my-3">
+    <h2>Inventories</h2>
+    <button class="btn btn-primary" onclick="openCreateModal()">
+        <i class="bi bi-plus-lg"></i> Agregar Inventario
+    </button>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-bordered table-striped align-middle">
+        <thead class="table-dark">
+            <tr>
+                <th>InventoryId</th>
+                <th>UnitPrice</th>
+                <th>UnitsInStock</th>
+                <th>LastUpdated</th>
+                <th>ProductId</th>
+                <th>DateAdded</th>
+                <th>ModifiedBy</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (!Model.Items.Any())
+            {
+                <tr>
+                    <td colspan="7" class="text-center text-muted">No se encontraron registros.</td>
+                </tr>
+            }
+            else
+            {
+                @foreach (var item in Model.Items)
+                {
+                    <tr>
+                        
+                        <td>
+                            <strong>@item.InventoryId</strong>
+                        </td>
+
+                        <td>
+                            @(item.UnitPrice)
+                </td>
+
+
+
+
+                        <td>@item.UnitsInStock</td>
+                        <th>@item.LastUpdated</th>
+                        <th>@item.ProductId</th>
+                        <th>@item.DateAdded</th>
+                        <th>@item.ModifiedBy</th>
+                        
+
+                        <td>
+                            <button class="btn btn-info btn-sm me-1" onclick="openDetailsModal(@item.InventoryId)">
+                                Detalles
+                            </button>
+                            <button class="btn btn-warning btn-sm me-1" onclick="openEditModal(@item.InventoryId)">
+                                Editar
+                            </button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteInventory(@item.InventoryId)">
+                                Eliminar
+                            </button>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+
+<!-- Paginador Custom: << < 5,6,7 > >> -->
+@if (Model.TotalPages > 1)
+{
+    <nav aria-label="Navegación de página">
+        <ul class="pagination justify-content-center">
+            <!-- Primero << -->
+            <li class="page-item @(Model.PageNumber == 1 ? "disabled" : "")">
+                <a class="page-link" href="@Url.Action("Index", new { page = 1 })" aria-label="Primera">&laquo;&laquo;</a>
+            </li>
+
+            <!-- Anterior < -->
+            <li class="page-item @(!Model.HasPreviousPage ? "disabled" : "")">
+                <a class="page-link" href="@Url.Action("Index", new { page = Model.PageNumber - 1 })" aria-label="Anterior">&laquo;</a>
+            </li>
+
+            <!-- Bloque Numérico Dinámico (Máx 3 páginas visibles p.ej. 5,6,7) -->
+            @{
+                int startPage = Math.Max(1, Model.PageNumber - 1);
+                int endPage = Math.Min(Model.TotalPages, startPage + 2);
+
+                if (endPage - startPage < 2 && startPage > 1)
+                {
+                    startPage = Math.Max(1, endPage - 2);
+                }
+            }
+
+            @for (int i = startPage; i <= endPage; i++)
+            {
+                <li class="page-item @(i == Model.PageNumber ? "active" : "")">
+                    <a class="page-link" href="@Url.Action("Index", new { page = i })">@i</a>
+                </li>
+            }
+
+            <!-- Siguiente > -->
+            <li class="page-item @(!Model.HasNextPage ? "disabled" : "")">
+                <a class="page-link" href="@Url.Action("Index", new { page = Model.PageNumber + 1 })" aria-label="Siguiente">&raquo;</a>
+            </li>
+
+            <!-- Último >> -->
+            <li class="page-item @(Model.PageNumber == Model.TotalPages ? "disabled" : "")">
+                <a class="page-link" href="@Url.Action("Index", new { page = Model.TotalPages })" aria-label="Última">&raquo;&raquo;</a>
+            </li>
+        </ul>
+    </nav>
+}
+
+<!-- Modal Contenedor Genérico Reutilizable -->
+<div class="modal fade" id="inventoryModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+   <div class="modal-dialog modal-lg">
+        <div class="modal-content" id="modalContainer">
+            <!-- Carga dinámica vía AJAX -->
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        const modalElement = new bootstrap.Modal(document.getElementById('inventoryModal'));
+
+        function openDetailsModal(id) {
+            $.get('@Url.Action("DetailsPartial", "Inventory")/' + id, function (html) {
+                $('#modalContainer').html(html);
+                modalElement.show();
+            });
+        }
+
+        function openCreateModal() {
+            $.get('@Url.Action("CreatePartial", "Inventory")', function (html) {
+                $('#modalContainer').html(html);
+                modalElement.show();
+            });
+        }
+
+        function openEditModal(id) {
+            $.get('@Url.Action("EditPartial", "Inventory")/' + id, function (html) {
+                $('#modalContainer').html(html);
+                modalElement.show();
+            });
+        }
+
+        function saveInventory() {
+            const rawDate = $('#LastUpdated').val();
+            const dto = {
+                inventoryId: parseInt($('#InventoryId').val()) || 0,
+                unitPrice: parseFloat($('#UnitPrice').val()) || 0.0,
+                unitsInStock: parseInt($('#UnitsInStock').val()) || 0,
+                // Si el input está vacío, enviamos la fecha actual en formato ISO; de lo contrario, la convertimos
+                lastUpdated: rawDate ? new Date(rawDate).toISOString() : new Date().toISOString(),
+                productId: $('#ProductId').val() ? parseInt($('#ProductId').val()) : null,
+                dateAdded: new Date().toISOString(),
+                modifiedBy: $('#ModifiedBy').val() || 'Admin'
+               };
+              
+
+            $.ajax({
+                url: '@Url.Action("Save", "Inventory")',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(dto),
+                success: function (res) {
+                    modalElement.hide();
+                    location.reload();
+                },
+                error: function (err) {
+                    alert('Ocurrió un error al guardar los datos.');
+                }
+            });
+        }
+
+        function deleteInventory(id) {
+            if (confirm("¿Está seguro de que desea eliminar esta categoria?")) {
+                $.post('@Url.Action("Delete", "Inventory")/' + id, function () {
+                    location.reload();
+                }).fail(function () {
+                    alert('Error al intentar eliminar el registro.');
+                });
+            }
+        }
+
+    </script>
+}

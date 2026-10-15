@@ -47,7 +47,7 @@
 
         <dt class="col-sm-4">Inventory ID</dt>
         <dd class="col-sm-8">
-            @(Model.InventoryId.HasValue ? $"{Model.InventoryId} - ({Model.InventoryCode ?? "Sin código"})" : "N/A")
+            @(Model.InventoryId.HasValue ? $"{Model.InventoryId}" : "N/A")
         </dd>
     </dl>
 </div>

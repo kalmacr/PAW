@@ -47,8 +47,8 @@ namespace PAW.Models.DTO;
     [JsonPropertyName("inventoryId")]
     public int? InventoryId { get; set; }
 
-    [JsonPropertyName("inventoryCode")]
-    public string? InventoryCode { get; set; }
+    //[JsonPropertyName("inventoryCode")]
+    //public string? InventoryCode { get; set; }
 
 
 
@@ -70,7 +70,13 @@ namespace PAW.Models.DTO;
                 // Mapeo de llaves foráneas desde la entidad Product
                 CategoryId = product.CategoryId,
                 SupplierId = product.SupplierId,
-                InventoryId = product.InventoryId
+                InventoryId = product.InventoryId,
+
+
+                // Nombres temporales hasta que crees los módulos de Category y Supplier
+                CategoryName = product.CategoryId.HasValue ? $"Categoría #{product.CategoryId}" : "Sin categoría",
+                SupplierName = product.SupplierId.HasValue ? $"Proveedor #{product.SupplierId}" : "Sin proveedor",
+
             };
 
         }
@@ -89,7 +95,8 @@ namespace PAW.Models.DTO;
                 // Asignación de referencias a la entidad
                 CategoryId = productDTO.CategoryId,
                 SupplierId = productDTO.SupplierId,
-                InventoryId = productDTO.InventoryId
+                InventoryId = productDTO.InventoryId,
+
             };
         }
 }
