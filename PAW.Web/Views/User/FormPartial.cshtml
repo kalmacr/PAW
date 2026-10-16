@@ -1,0 +1,89 @@
+﻿@model PAW.Models.DTO.UserDTO
+
+<div class="modal-header bg-primary text-white">
+    <h5 class="modal-title">Editar usuario</h5>
+    <button type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Cerrar">
+    </button>
+</div>
+
+<form id="userForm">
+    <div class="modal-body">
+        <input type="hidden" id="UserId" value="@Model.UserId" />
+
+        <div class="mb-3">
+            <label for="Username" class="form-label">Nombre de usuario</label>
+            <input type="text"
+                   id="Username"
+                   class="form-control"
+                   value="@Model.Username"
+                   maxlength="255"
+                   required />
+        </div>
+
+        <div class="mb-3">
+            <label for="Email" class="form-label">Correo electrónico</label>
+            <input type="email"
+                   id="Email"
+                   class="form-control"
+                   value="@Model.Email"
+                   maxlength="255"
+                   required />
+        </div>
+
+        <div class="form-check mb-3">
+            <input type="checkbox"
+                   id="IsActive"
+                   class="form-check-input"
+                   checked="@(Model.IsActive == true)" />
+            <label for="IsActive" class="form-check-label">Usuario activo</label>
+        </div>
+
+        <div class="mb-3">
+            <label for="RoleId" class="form-label">Id del rol</label>
+            <input type="number"
+                   id="RoleId"
+                   class="form-control"
+                   value="@Model.RoleId"
+                   min="1" />
+        </div>
+
+        <div class="mb-3">
+            <label for="ModifiedBy" class="form-label">Modificado por</label>
+            <input type="text"
+                   id="ModifiedBy"
+                   class="form-control"
+                   value="@Model.ModifiedBy"
+                   maxlength="255" />
+        </div>
+
+        <div class="mb-3">
+            <label for="LastModifiedBy" class="form-label">Última modificación por</label>
+            <input type="text"
+                   id="LastModifiedBy"
+                   class="form-control"
+                   value="@Model.LastModifiedBy"
+                   maxlength="50" />
+        </div>
+
+        <p class="text-muted small mb-0">
+            La contraseña no se muestra ni se modifica desde este formulario.
+        </p>
+    </div>
+
+    <div class="modal-footer">
+        <button type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal">
+            Cancelar
+        </button>
+
+        <button type="button"
+                class="btn btn-success"
+                onclick="saveUser()">
+            Guardar
+        </button>
+    </div>
+</form>

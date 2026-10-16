@@ -10,7 +10,8 @@ namespace PAW.API.Controllers
     [ApiController]
     [Route("[controller]")]
     
-    public class ProductController(ILogger<ProductController> logger, IProductRepository productRepository) : ControllerBase
+    public class ProductController(ILogger<ProductController> logger,
+        IProductRepository productRepository) : ControllerBase
     {
 
 
@@ -51,7 +52,9 @@ namespace PAW.API.Controllers
     //}
     // Paginado de productos (máximo 25 registros por página)
         [HttpGet("paged", Name = "GetProductsPaged")]
-        public async Task<ActionResult<PagedResult<ProductDTO>>> GetPaged([FromQuery] int page = 1, [FromQuery] int pageSize = 25)
+        public async Task<ActionResult<PagedResult<ProductDTO>>> GetPaged(
+            [FromQuery] int page = 1, 
+            [FromQuery] int pageSize = 25)
         {
             var products = await productRepository.ReadAsync() ?? [];
             var totalCount = products.Count();

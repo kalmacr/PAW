@@ -1,0 +1,191 @@
+﻿@model PAW.Models.DTO.PagedResult<PAW.Models.DTO.UserDTO>
+
+@{
+    ViewData["Title"] = "User";
+}
+
+<div class="d-flex justify-content-between align-items-center my-3">
+    <h2>Usuarios</h2>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-bordered table-striped align-middle">
+        <thead class="table-dark">
+            <tr>
+                <th>Id</th>
+                <th>Usuario</th>
+                <th>Correo</th>
+                <th>Activo</th>
+                <th>Rol</th>
+                <th>Creado</th>
+                <th>Última modificación</th>
+                <th>Modificado por</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Items == null || !Model.Items.Any())
+            {
+                <tr>
+                    <td colspan="9" class="text-center text-muted">
+                        No se encontraron usuarios.
+                    </td>
+                </tr>
+            }
+            else
+            {
+                @foreach (var item in Model.Items)
+                {
+                    <tr>
+                        <td><strong>@item.UserId</strong></td>
+                        <td>@item.Username</td>
+                        <td>@item.Email</td>
+                        <td>@(item.IsActive == true ? "Sí" : "No")</td>
+                        <td>@item.RoleId</td>
+                        <td>@item.CreatedAt?.ToString("g")</td>
+                        <td>@item.LastModified?.ToString("g")</td>
+                        <td>@item.ModifiedBy</td>
+                        <td>
+                            <button type="button"
+                                    class="btn btn-info btn-sm me-1"
+                                    onclick="openDetailsModal(@item.UserId)">
+                                Detalles
+                            </button>
+
+                            <button type="button"
+                                    class="btn btn-warning btn-sm me-1"
+                                    onclick="openEditModal(@item.UserId)">
+                                Editar
+                            </button>
+
+                            <button type="button"
+                                    class="btn btn-danger btn-sm"
+                                    onclick="deleteUser(@item.UserId)">
+                                Eliminar
+                            </button>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+<!-- Paginador Custom: << < 5,6,7 > >> -->
+@if (Model.TotalPages > 1)
+{
+    <nav aria-label="Navegación de página">
+        <ul class="pagination justify-content-center">
+            <!-- Primero << -->
+            <li class="page-item @(Model.PageNumber == 1 ? "disabled" : "")">
+                <a class="page-link" href="@Url.Action("Index", new { page = 1 })" aria-label="Primera">&laquo;&laquo;</a>
+            </li>
+
+            <!-- Anterior < -->
+            <li class="page-item @(!Model.HasPreviousPage ? "disabled" : "")">
+                <a class="page-link" href="@Url.Action("Index", new { page = Model.PageNumber - 1 })" aria-label="Anterior">&laquo;</a>
+            </li>
+
+            <!-- Bloque Numérico Dinámico (Máx 3 páginas visibles p.ej. 5,6,7) -->
+            @{
+                int startPage = Math.Max(1, Model.PageNumber - 1);
+                int endPage = Math.Min(Model.TotalPages, startPage + 2);
+
+                if (endPage - startPage < 2 && startPage > 1)
+                {
+                    startPage = Math.Max(1, endPage - 2);
+                }
+            }
+
+            @for (int i = startPage; i <= endPage; i++)
+            {
+                <li class="page-item @(i == Model.PageNumber ? "active" : "")">
+                    <a class="page-link" href="@Url.Action("Index", new { page = i })">@i</a>
+                </li>
+            }
+
+            <!-- Siguiente > -->
+            <li class="page-item @(!Model.HasNextPage ? "disabled" : "")">
+                <a class="page-link" href="@Url.Action("Index", new { page = Model.PageNumber + 1 })" aria-label="Siguiente">&raquo;</a>
+            </li>
+
+            <!-- Último >> -->
+            <li class="page-item @(Model.PageNumber == Model.TotalPages ? "disabled" : "")">
+                <a class="page-link" href="@Url.Action("Index", new { page = Model.TotalPages })" aria-label="Última">&raquo;&raquo;</a>
+            </li>
+        </ul>
+    </nav>
+}
+
+<!-- Modal Contenedor Genérico Reutilizable -->
+<div class="modal fade" id="userModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" id="modalContainer">
+            <!-- Carga dinámica vía AJAX -->
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        const userModal = new bootstrap.Modal(
+            document.getElementById('userModal')
+        );
+
+        function openDetailsModal(id) {
+            $.get('@Url.Action("DetailsPartial", "User")/' + id, function (html) {
+                $('#modalContainer').html(html);
+                userModal.show();
+            });
+        }
+
+        function openEditModal(id) {
+            $.get('@Url.Action("EditPartial", "User")/' + id, function (html) {
+                $('#modalContainer').html(html);
+                userModal.show();
+            });
+        }
+
+        function saveUser() {
+            const dto = {
+                userId: parseInt($('#UserId').val()) || 0,
+                username: $('#Username').val(),
+                email: $('#Email').val(),
+                isActive: $('#IsActive').is(':checked'),
+                roleId: $('#RoleId').val()
+                    ? parseInt($('#RoleId').val())
+                    : null,
+                modifiedBy: $('#ModifiedBy').val(),
+                lastModifiedBy: $('#LastModifiedBy').val(),
+                lastModified: new Date().toISOString()
+            };
+
+            $.ajax({
+                url: '@Url.Action("Save", "User")',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(dto),
+                success: function () {
+                    userModal.hide();
+                    location.reload();
+                },
+                error: function (xhr) {
+                    alert(xhr.responseText || 'Ocurrió un error al guardar el usuario.');
+                }
+            });
+        }
+
+        function deleteUser(id) {
+            if (!confirm('¿Está seguro de que desea eliminar este usuario?')) {
+                return;
+            }
+
+            $.post('@Url.Action("Delete", "User")/' + id)
+                .done(function () {
+                    location.reload();
+                })
+                .fail(function (xhr) {
+                    alert(xhr.responseText || 'Error al eliminar el usuario.');
+                });
+        }
+    </script>
+}

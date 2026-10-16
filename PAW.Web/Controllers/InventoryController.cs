@@ -18,25 +18,7 @@ namespace PAW.Web.Controllers
             _logger = logger;
         }
 
-        //public async Task<IActionResult> Index()
-        //{
-        //    var result = await _productService.GetProductAsync();
-        //    return View(result);
-        //}
-
-        //public IActionResult Create()
-        //{
-        //    return View();
-        //}
-
-
-
-        //[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        //public IActionResult Error()
-        //{
-        //    return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        //}
-        // Vista principal con soporte para número de página
+        
         public async Task<IActionResult> Index(int page = 1)
         {
             var pagedCategories = await _inventoryService.GetInventoriesPagedAsync(page, 25) ?? new PagedResult<InventoryDTO>();

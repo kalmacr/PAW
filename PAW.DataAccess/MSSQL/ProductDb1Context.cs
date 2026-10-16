@@ -31,7 +31,7 @@ public partial class ProductDb1Context : DbContext
 
     public virtual DbSet<Component> Components { get; set; }
 
-    public virtual DbSet<Inventory> Inventories { get; set; }
+    public virtual DbSet<User> Inventories { get; set; }
 
     public virtual DbSet<MigrationHistory> MigrationHistories { get; set; }
 

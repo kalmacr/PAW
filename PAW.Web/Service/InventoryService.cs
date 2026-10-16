@@ -17,31 +17,7 @@ public interface IInventoryService
 
 }
 
-//public class ProductService : ServiceBase, IProductService
-//{
-//    private readonly string _path = "product";
-//    private readonly IRestProvider _restProvider;
-//    public ProductService(IRestProvider restProvider)
-//    {
-//        _restProvider = restProvider;
 
-//    }
-
-//    public async Task<IEnumerable<ProductDTO>> GetProductAsync()
-//    {
-//        var response = await _restProvider.GetAsync(SetPathUrl(_path), id: null);
-//        var products = await JsonProvider.DeserializeAsync<IEnumerable<ProductDTO>>(response);
-//        return products;
-//    }
-
-//    public async Task<string?> GetByIdAsync(String id)
-//    {
-//        var response = await _restProvider.GetAsync(SetPathUrl(_path), id);
-//        var product = await JsonProvider.DeserializeAsync<ProductDTO>(response);
-//        return product?.Name;
-
-//    }
-//}
 public class InventoryService(IRestProvider restProvider) : ServiceBase, IInventoryService
 {
     private readonly string _path = "inventory";

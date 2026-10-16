@@ -174,6 +174,7 @@ public abstract class RepositoryBase<T> : IRepositoryBase<T> where T : class
         try
         {
             return await _context.Set<T>().ToListAsync();
+
         }
         catch (Exception ex)
         {

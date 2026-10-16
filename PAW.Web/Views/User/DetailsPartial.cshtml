@@ -1,0 +1,51 @@
+﻿@model PAW.Models.DTO.UserDTO
+
+<div class="modal-header bg-dark text-white">
+    <h5 class="modal-title">
+        <i class="bi bi-info-circle"></i> Detalles del usuario
+    </h5>
+    <button type="button"
+            class="btn-close btn-close-white"
+            data-bs-dismiss="modal"
+            aria-label="Cerrar">
+    </button>
+</div>
+
+<div class="modal-body">
+    <dl class="row">
+        <dt class="col-sm-4">Id</dt>
+        <dd class="col-sm-8"><strong>@Model.UserId</strong></dd>
+
+        <dt class="col-sm-4">Nombre de usuario</dt>
+        <dd class="col-sm-8">@Model.Username</dd>
+
+        <dt class="col-sm-4">Correo</dt>
+        <dd class="col-sm-8">@Model.Email</dd>
+
+        <dt class="col-sm-4">Activo</dt>
+        <dd class="col-sm-8">@(Model.IsActive == true ? "Sí" : "No")</dd>
+
+        <dt class="col-sm-4">Id del rol</dt>
+        <dd class="col-sm-8">@Model.RoleId</dd>
+
+        <dt class="col-sm-4">Creado</dt>
+        <dd class="col-sm-8">@Model.CreatedAt?.ToString("g")</dd>
+
+        <dt class="col-sm-4">Última modificación</dt>
+        <dd class="col-sm-8">@Model.LastModified?.ToString("g")</dd>
+
+        <dt class="col-sm-4">Modificado por</dt>
+        <dd class="col-sm-8">@Model.ModifiedBy</dd>
+
+        <dt class="col-sm-4">Última modificación por</dt>
+        <dd class="col-sm-8">@Model.LastModifiedBy</dd>
+    </dl>
+</div>
+
+<div class="modal-footer">
+    <button type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal">
+        Cerrar
+    </button>
+</div>
