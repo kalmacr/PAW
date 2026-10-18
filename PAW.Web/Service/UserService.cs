@@ -6,8 +6,6 @@ namespace PAW.Web.Service;
 
 public interface IUserService
 {
- 
-    //Task<IEnumerable<ProductDTO>> GetProductAsync();
     Task<PagedResult<UserDTO>?> GetUsersPagedAsync(int page = 1, int pageSize = 25);
     Task<UserDTO?> GetByIdAsync(string id);
     Task<bool> SaveAsync(UserDTO userDto);
@@ -20,7 +18,7 @@ public interface IUserService
 
 public class UserService(IRestProvider restProvider) : ServiceBase, IUserService
 {
-    private readonly string _path = "User";
+    private readonly string _path = "Users";
 
 
     public async Task<PagedResult<UserDTO>?> GetUsersPagedAsync(int page = 1, int pageSize = 25)
@@ -48,29 +46,18 @@ public class UserService(IRestProvider restProvider) : ServiceBase, IUserService
         }
         catch (Exception ex)
         {
-            return null; // Retorna null si no se encuentra o hay error
+            return null; 
         }
     }
 
 
 
-    //public async Task<bool> SaveAsync(ProductDTO productDto)
-    //{
-    //    var list = new List<ProductDTO> { productDto };
-    //    var jsonContent = JsonProvider.Serialize(list);
-
-    //    var response = await restProvider.PostAsync(
-    //        SetPathUrl(_path),
-    //        jsonContent);
-
-    //    return !string.IsNullOrEmpty(response);
-    //}
 
     public async Task<bool> SaveAsync(UserDTO userDTO)
     {
         var endpoint = SetPathUrl(_path);
 
-        // El POST se envía a la colección general /product
+        // El POST se envía a la colección general 
         var list = new List<UserDTO> { userDTO };
         var jsonContent = JsonProvider.Serialize(list);
 
@@ -95,7 +82,6 @@ public class UserService(IRestProvider restProvider) : ServiceBase, IUserService
         }
         catch (Exception ex)
         {
-            // Si la API falla, captura el error  500
             return false;
         }
     }
