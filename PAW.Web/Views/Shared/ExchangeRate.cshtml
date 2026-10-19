@@ -1,0 +1,26 @@
+﻿@model PAW.Web.Services.TipoCambioResponse
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+<div class="container">
+    <div>
+        <h2>Dollar Exchange Rate</h2>
+        <p id="one">@{DateTime.UtcNow.ToShortDateString();}</p>
+        <p>Currency: @Model.Dolar.Compra.Valor</p>
+        <p>Currency: @Model.Dolar.Venta.Valor</p>
+    </div>
+    <hr/>
+    <div>
+        <h2>Euro Exchange Rate</h2>
+        <p>Currency: @Model.Euro.Dolares</p>
+        <p>Currency: @Model.Euro.Colones</p>
+    </div>
+</div>
+
+@section Scripts {
+    function loadExchangeRate() {
+        let exchangeRate = getExchangeRate();
+        document.getElementById("one").InnerText = "exchangeRate";
+    }
+}

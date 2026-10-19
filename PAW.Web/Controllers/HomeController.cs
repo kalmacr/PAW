@@ -1,26 +1,37 @@
- using System.Diagnostics;
+using System.Diagnostics;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using PAW.Web.Models;
+using PAW.Web.Services;
 
 namespace PAW.Web.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : ControllerBase
     {
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(IExchangeRateService exchangeRateService, ILogger<HomeController> logger)
+            : base(exchangeRateService)
         {
             _logger = logger;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var viewModel = new HomeViewModel
+            {
+                TipoCambio = base.TipoCambio
+            };
+            return View(viewModel);
         }
 
-        public IActionResult Privacy()
+        public async Task<IActionResult> Privacy()
         {
-            return View();
+            var viewModel = new HomeViewModel
+            {
+                TipoCambio = base.TipoCambio
+            };
+            return View(viewModel);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
