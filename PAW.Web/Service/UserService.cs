@@ -18,7 +18,7 @@ public interface IUserService
 
 public class UserService(IRestProvider restProvider) : ServiceBase, IUserService
 {
-    private readonly string _path = "Users";
+    private readonly string _path = "User";
 
 
     public async Task<PagedResult<UserDTO>?> GetUsersPagedAsync(int page = 1, int pageSize = 25)
