@@ -20,3 +20,179 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+
+/* ===========================================================
+   Widget flotante: tipo de cambio (Views/Shared/ExchangeRate)
+   =========================================================== */
+.fx-widget {
+    --fx-bg: #ffffff;
+    --fx-text: #1f2937;
+    --fx-muted: #6b7280;
+    --fx-line: #e5e7eb;
+    --fx-accent: #1b6ec2;
+    --fx-accent-soft: #e8f1fb;
+    position: fixed;
+    top: 72px; /* debajo del navbar */
+    right: 16px;
+    z-index: 1030;
+    width: 260px;
+    background: var(--fx-bg);
+    color: var(--fx-text);
+    border: 1px solid var(--fx-line);
+    border-top: 3px solid var(--fx-accent);
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(17, 24, 39, 0.12), 0 2px 6px rgba(17, 24, 39, 0.06);
+    font-size: 0.875rem;
+    overflow: hidden;
+    transition: width 0.2s ease, box-shadow 0.2s ease;
+}
+
+    .fx-widget:hover {
+        box-shadow: 0 14px 36px rgba(17, 24, 39, 0.16), 0 2px 6px rgba(17, 24, 39, 0.08);
+    }
+
+.fx-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 10px 8px 14px;
+    background: var(--fx-accent-soft);
+}
+
+.fx-title {
+    white-space: nowrap;
+    font-weight: 600;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--fx-accent);
+}
+
+.fx-actions {
+    display: flex;
+    gap: 4px;
+}
+
+.fx-btn {
+    width: 26px;
+    height: 26px;
+    padding: 0;
+    border: 0;
+    border-radius: 6px;
+    background: transparent;
+    color: var(--fx-accent);
+    font-size: 1rem;
+    line-height: 26px;
+    cursor: pointer;
+}
+
+    .fx-btn:hover {
+        background: rgba(27, 110, 194, 0.12);
+    }
+
+    .fx-btn:focus-visible {
+        outline: 2px solid var(--fx-accent);
+        outline-offset: 1px;
+    }
+
+.fx-body {
+    padding: 10px 14px 10px;
+}
+
+.fx-group + .fx-group {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--fx-line);
+}
+
+.fx-currency {
+    margin: 0 0 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.fx-code {
+    margin-left: 4px;
+    padding: 1px 6px;
+    border-radius: 999px;
+    background: #f3f4f6;
+    color: var(--fx-muted);
+    font-size: 0.7rem;
+    font-weight: 500;
+}
+
+.fx-rates {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin: 0;
+}
+
+    .fx-rates dt {
+        font-weight: 400;
+        font-size: 0.72rem;
+        color: var(--fx-muted);
+    }
+
+    .fx-rates dd {
+        margin: 0;
+        font-size: 1rem;
+        font-weight: 600;
+        font-variant-numeric: tabular-nums;
+    }
+
+.fx-footer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 2px 8px;
+    white-space: nowrap;
+    margin-top: 10px;
+    padding-top: 8px;
+    border-top: 1px dashed var(--fx-line);
+    font-size: 0.7rem;
+    color: var(--fx-muted);
+}
+
+/* Estados */
+.fx-widget.is-loading [data-fx-action="refresh"] {
+    animation: fx-spin 0.8s linear infinite;
+}
+
+.fx-widget.is-loading .fx-rates dd {
+    opacity: 0.4;
+}
+
+.fx-widget.is-stale .fx-source,
+.fx-widget.is-error .fx-footer {
+    color: #b45309;
+}
+
+.fx-widget.is-collapsed {
+    width: 196px;
+}
+
+    .fx-widget.is-collapsed .fx-body {
+        display: none;
+    }
+
+@keyframes fx-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@media (max-width: 575.98px) {
+    .fx-widget {
+        top: 64px;
+        right: 12px;
+        width: 230px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .fx-widget.is-loading [data-fx-action="refresh"] {
+        animation: none;
+    }
+}

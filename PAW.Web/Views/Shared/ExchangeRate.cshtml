@@ -1,7 +1,7 @@
-﻿@model PAW.Web.Services.TipoCambioResponse
-@*
+﻿@* @model PAW.Web.Services.TipoCambioResponse
+
     For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
-*@
+
 
 <div class="container">
     <div>
@@ -24,3 +24,53 @@
         document.getElementById("one").InnerText = "exchangeRate";
     }
 }
+ *@
+@*
+    Widget flotante del tipo de cambio.
+    No recibe modelo: los datos los carga loadExchangeRate() desde wwwroot/js/site.js.
+*@
+
+<aside id="exchange-rate" class="fx-widget is-loading" aria-live="polite" aria-label="Tipo de cambio">
+    <header class="fx-header">
+        <span class="fx-title">Tipo de cambio</span>
+        <div class="fx-actions">
+            <button type="button" class="fx-btn" data-fx-action="refresh" title="Actualizar" aria-label="Actualizar tipo de cambio">&#x21bb;</button>
+            <button type="button" class="fx-btn" data-fx-action="toggle" title="Minimizar" aria-label="Minimizar" aria-expanded="true">&minus;</button>
+        </div>
+    </header>
+
+    <div class="fx-body">
+        <section class="fx-group">
+            <h3 class="fx-currency">Dólar <span class="fx-code">USD</span></h3>
+            <dl class="fx-rates">
+                <div>
+                    <dt>Compra</dt>
+                    <dd data-fx="dolarCompra">&mdash;</dd>
+                </div>
+                <div>
+                    <dt>Venta</dt>
+                    <dd data-fx="dolarVenta">&mdash;</dd>
+                </div>
+            </dl>
+        </section>
+
+        <section class="fx-group">
+            <h3 class="fx-currency">Euro <span class="fx-code">EUR</span></h3>
+            <dl class="fx-rates">
+                <div>
+                    <dt>Colones</dt>
+                    <dd data-fx="euroColones">&mdash;</dd>
+                </div>
+                <div>
+                    <dt>Dólares</dt>
+                    <dd data-fx="euroDolares">&mdash;</dd>
+                </div>
+            </dl>
+        </section>
+
+        <footer class="fx-footer">
+            <span data-fx="fecha">Cargando&hellip;</span>
+            <span class="fx-source" data-fx="origen"></span>
+        </footer>
+    </div>
+</aside>
