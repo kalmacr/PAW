@@ -1,0 +1,83 @@
+﻿@{
+    ViewData["Title"] = "Gestión de Tareas";
+}
+
+<div class="container-fluid my-4">
+    <div class="row">
+        <div class="col-md-9">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h2>Catálogo de Tareas</h2>
+                <button class="btn btn-primary" onclick="openCreateModal()">
+                    <i class="bi bi-plus-lg"></i> Nueva Tarea
+                </button>
+            </div>
+
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <table class="table table-striped align-middle">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Estado</th>
+                                <th>Fecha Vencimiento</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="taskTableBody">
+                            <!--vía AJAX -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        
+    </div>
+</div>
+
+<!-- Modal Genérico -->
+<div class="modal fade" id="taskModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" id="modalContainer"></div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Cargar listado e indicadores al iniciar la vista
+        $(document).ready(function () {
+            loadTasks();
+            loadExchangeRate();
+        });
+
+        function loadTasks() {
+            $.get('@Url.Action("GetTaskList", "Task")', function (html) {
+                $('#taskTableBody').html(html);
+            });
+        }
+
+
+        function openCreateModal() {
+            $.get('@Url.Action("CreatePartial", "Task")', function (html) {
+                $('#modalContainer').html(html);
+                new bootstrap.Modal(document.getElementById('taskModal')).show();
+            });
+        }
+
+        function openEditModal(id) {
+            $.get('@Url.Action("EditPartial", "Task")', { id: id }, function (html) {
+                $('#modalContainer').html(html);
+                new bootstrap.Modal(document.getElementById('taskModal')).show();
+            });
+        }
+
+        function deleteTask(id) {
+            if (confirm('¿Estás seguro de eliminar esta tarea?')) {
+                $.post('@Url.Action("Delete", "Task")', { id: id }, function (res) {
+                    loadTasks();
+                });
+            }
+        }
+    </script>
+}

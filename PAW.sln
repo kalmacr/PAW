@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PAW.DataAccess", "PAW.DataA
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PAW.Architecture", "PAW.Architecture\PAW.Architecture.csproj", "{168DB680-82D5-3A8D-C8CB-420529DB86CA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MinimalAPI", "MinimalAPI\MinimalAPI.csproj", "{777B5A7E-7E94-441D-99B2-B5862F16D358}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{168DB680-82D5-3A8D-C8CB-420529DB86CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{168DB680-82D5-3A8D-C8CB-420529DB86CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{168DB680-82D5-3A8D-C8CB-420529DB86CA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{777B5A7E-7E94-441D-99B2-B5862F16D358}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{777B5A7E-7E94-441D-99B2-B5862F16D358}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{777B5A7E-7E94-441D-99B2-B5862F16D358}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{777B5A7E-7E94-441D-99B2-B5862F16D358}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

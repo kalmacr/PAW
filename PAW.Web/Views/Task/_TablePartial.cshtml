@@ -1,0 +1,32 @@
+﻿@model IEnumerable<PAW.Models.DTO.TaskDTO>
+
+@if (Model != null && Model.Any())
+{
+    foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.Id</td>
+            <td>@item.Name</td>
+            <td>
+                <span class="badge @(item.Status == "Completada" ? "bg-success" : item.Status == "En Progreso" ? "bg-warning text-dark" : "bg-secondary")">
+                    @item.Status
+                </span>
+            </td>
+            <td>@(item.DueDate.HasValue? item.DueDate.Value.ToString("dd/MM/yyyy HH:mm") : "Sin fecha")</td>
+            <td>
+                <button class="btn btn-sm btn-outline-primary" onclick="openEditModal(@item.Id)">
+                    <i class="bi bi-pencil"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-danger" onclick="deleteTask(@item.Id)">
+                    <i class="bi bi-trash"></i>
+                </button>
+            </td>
+        </tr>
+    }
+}
+else
+{
+    <tr>
+        <td colspan="5" class="text-center text-muted py-3">No hay tareas registradas.</td>
+    </tr>
+}

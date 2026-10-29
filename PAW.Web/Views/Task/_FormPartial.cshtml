@@ -1,0 +1,74 @@
+﻿@model PAW.Models.DTO.TaskDTO
+
+<div class="modal-header bg-primary text-white">
+    <h5 class="modal-title">@(Model.Id > 0 ? "Editar Tarea" : "Nueva Tarea")</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+<form id="taskForm">
+    <div class="modal-body">
+        <input type="hidden" id="TaskId" value="@Model.Id" />
+
+        <div class="mb-3">
+            <label class="form-label">Nombre de la Tarea</label>
+            <input type="text" id="TaskName" class="form-control" value="@Model.Name" required autocomplete="off" />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Descripción</label>
+            <textarea id="TaskDescription" class="form-control" rows="2">@Model.Description</textarea>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Estado</label>
+            <select id="TaskStatus" class="form-select">
+                <option value="Pendiente" selected="@(Model.Status == "Pendiente")">Pendiente</option>
+                <option value="En Progreso" selected="@(Model.Status == "En Progreso")">En Progreso</option>
+                <option value="Completada" selected="@(Model.Status == "Completada")">Completada</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Fecha de Vencimiento</label>
+            <input type="datetime-local" id="TaskDueDate" class="form-control"
+                   value="@(Model.DueDate.HasValue? Model.DueDate.Value.ToString("yyyy-MM-ddTHH:mm") : "")" />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Modificado Por</label>
+            <input type="text" id="TaskModifiedBy" class="form-control" value="@(string.IsNullOrEmpty(Model.ModifiedBy) ? "Admin" : Model.ModifiedBy)" />
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-success" onclick="saveTask()">Guardar</button>
+    </div>
+</form>
+
+<script>
+        function saveTask() {
+        const dto = {
+            id: parseInt($('#TaskId').val()) || 0,
+            name: $('#TaskName').val(),
+            description: $('#TaskDescription').val(),
+            status: $('#TaskStatus').val(),
+            dueDate: $('#TaskDueDate').val() ? new Date($('#TaskDueDate').val()).toISOString() : null,
+            modifiedBy: $('#TaskModifiedBy').val() || 'Admin'
+        };
+
+        $.ajax({
+            url: '@Url.Action("Save", "Task")',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(dto), 
+            success: function (res) {
+                var modalEl = document.getElementById('taskModal');
+                var modal = bootstrap.Modal.getInstance(modalEl);
+                modal.hide();
+                loadTasks();
+            },
+            error: function (xhr) {
+                alert('Error al guardar la tarea: ' + (xhr.responseText || 'Error desconocido'));
+            }
+        });
+    }
+</script>
